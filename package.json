@@ -1,0 +1,14 @@
+{
+  "name": "f5-xc-api-tool",
+  "version": "1.0.0",
+  "description": "KF - Node.js tool to query the F5 XC security logs API.",
+  "main": "run_query.js",
+  "scripts": {
+    "start": "node run_query.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "date-fns": "^2.30.0",
+    "ip-address": "^10.0.1"
+  }
+}
