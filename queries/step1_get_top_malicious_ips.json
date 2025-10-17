@@ -1,0 +1,18 @@
+{
+  "namespace": "{NAMESPACE}",
+  "query": {
+    "sec_event_type": "malicious_user_sec_event"
+  },
+  "start_time": "{START_TIME}",
+  "threat_leve": "High|Medium",
+  "end_time": "{END_TIME}",
+  "aggs": {
+    "fieldAggregation_SRC_IP_100": {
+      "field_aggregation": {
+        "field": "SRC_IP",
+        "topk": 100
+      }
+    }
+  }
+}
+
