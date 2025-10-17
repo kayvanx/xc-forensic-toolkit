@@ -108,7 +108,7 @@ node run_query.js <path/to/query.json> [time_option] [workflow_option]
 
 #### Use Case 1: Calculate MUD/MUM Impact (Drill-Down)
 
-This workflow first finds the top malicious IPs and then counts the WAF actions associated with them. This is great for showing how Malicious User Mitigation (MUM) enhances WAF.
+This workflow first finds the top malicious IPs and then counts the actions from other security controls associated with them. This is great for showing how Malicious User Mitigation (MUM) enhances WAF, Rate Limit, Bot and etc.
 
 1.  **First Query (`./queries/step1_get_top_malicious_ips.json`)**: Finds top `SRC_IP` with `malicious_user_sec_event`.
 2.  **Second Query (`./queries/step2_count_waf_actions.json`)**: This step uses the malicious IPs to get a summary of WAF and other security layers actions, quantifying how many additional security events would have been blocked if MUD was in mitigation mode.
@@ -130,7 +130,7 @@ A simple aggregation to find which namespaces and virtual hosts have the most ma
 node run_query.js ./queries/top_vh_namespaces_by_mud.json --relative 7d
 ```
 
-#### Use Case 3: Top 100 URLs Accessed by Malicious Users
+#### Use Case 3: Top 100s
 
 Another simple aggregation to see top 100 URLs, Users, TLS Fingerprint and etc. are being targeted.
 
@@ -152,14 +152,15 @@ Creating queries is easy. Just make a new `.json` file and follow the structure.
 {
   "namespace": "{NAMESPACE}",
   "query": {
-    "sec_event_type": "waf_sec_event",
-    "country": "!~US|CA|AU"
+    "sec_event_type": "waf_sec_event|malicious_user_sec_event",
+    "country": "!~US|CA|AU",
+    "vh_name": "{VH_NAME}"
   },
   "aggs": {
     "top_countries": {
       "field_aggregation": {
         "field": "COUNTRY",
-        "topk": 10
+        "topk": 50
       }
     }
   }
