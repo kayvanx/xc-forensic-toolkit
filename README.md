@@ -62,7 +62,7 @@ This is the control center for the script. Here’s what each setting does:
   "_comment3": "Set the default namespace. Use 'system' for tenancy-wide searches.",
   "NAMESPACE": "system",
 
-  "_comment4": "Your F5 XC API Token. Keep this safe! The recommended role is 'ves-io-default-role' on the system and relevant app namespaces.",
+  "_comment4": "Your F5 XC API Token. Keep this safe! The recommended role is 'ves-io-monitor-role' on the system and relevant app namespaces.",
   "API_TOKEN": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=",
 
   "_comment5": "Optionally define an LB name to construct a VH_NAME variable for your queries.",
@@ -74,6 +74,7 @@ This is the control center for the script. Here’s what each setting does:
 
   "//": "List of trusted IPs/subnets to exclude from analysis. Critical for accurate Malicious User Detection (MUD) PoVs.",
   "EXEMPT_SUBNETS": [
+    "100.64.0.0/10",
     "10.0.0.0/8",
     "172.16.0.0/12",
     "192.168.0.0/16"
