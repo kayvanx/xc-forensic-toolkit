@@ -1,0 +1,29 @@
+{
+  "_comment1": "Set the tenant URL. This is the main domain for your F5 XC console.",
+  "TENANT_URL": "your-tenant.console.ves.volterra.io",
+
+  "_comment2": "URL templates. The script will automatically insert your TENANT_URL and NAMESPACE.",
+  "API_AGGREGATION_URL_TEMPLATE": "https://{TENANT_URL}/api/data/namespaces/{NAMESPACE}/app_security/events/aggregation",
+  "API_EVENTS_URL_TEMPLATE": "https://{TENANT_URL}/api/data/namespaces/{NAMESPACE}/app_security/events",
+
+  "_comment3": "Set the default namespace. Use 'system' for tenancy-wide searches.",
+  "NAMESPACE": "system",
+
+  "_comment4": "Your F5 XC API Token. Keep this safe! The recommended role is 'ves-io-monitor-role' on the system and relevant app namespaces.",
+  "API_TOKEN": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=",
+
+  "_comment5": "Optionally define an LB name to construct a VH_NAME variable for your queries.",
+  "LB_NAME": "my-app-lb",
+  "VH_NAME_TEMPLATE": "ves-io-http-loadbalancer-${LB_NAME}",
+
+  "_comment6": "Maximum number of values (e.g., IPs) to use in a drill-down (Group By) query.",
+  "MAX_DRILLDOWN_VALUES": 100,
+
+  "//": "List of trusted IPs/subnets to exclude from analysis. Critical for accurate Malicious User Detection (MUD) PoVs.",
+  "EXEMPT_SUBNETS": [
+    "100.64.0.0/10",
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+  ]
+}
