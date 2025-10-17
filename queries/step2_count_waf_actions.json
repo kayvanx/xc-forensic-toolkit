@@ -1,0 +1,17 @@
+{
+  "namespace": "{NAMESPACE}",
+  "query": {
+    "sec_event_type": "!=malicious_user_sec_event",
+    "src_ip": "{DRILLDOWN_VALUES}"
+  },
+  "start_time": "{START_TIME}",
+  "end_time": "{END_TIME}",
+  "aggs": {
+    "fieldAggregation_ACTIONS": {
+      "field_aggregation": {
+        "field": "ACTION",
+        "topk": 10
+      }
+    }
+  }
+}
