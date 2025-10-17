@@ -1,5 +1,5 @@
 {
-  "name": "f5-xc-api-tool",
+  "name": "f5xc-forensic-toolkit",
   "version": "1.0.0",
   "description": "KF - Node.js tool to query the F5 XC security logs API.",
   "main": "run_query.js",
