@@ -110,7 +110,8 @@ node run_query.js <path/to/query.json> [time_option] [workflow_option]
 This workflow first finds the top malicious IPs and then counts the WAF actions associated with them. This is great for showing how Malicious User Mitigation (MUM) enhances WAF.
 
 1.  **First Query (`./queries/step1_get_top_malicious_ips.json`)**: Finds top `SRC_IP` with `malicious_user_sec_event`.
-2.  **Second Query (`./queries/step2_count_waf_actions.json`)**: Takes the IPs and gets a summary of actions by other security layers, showing how aproximately many security events could have been blocked if MUD was in mitigation mode.
+2.  **Second Query (`./queries/step2_count_waf_actions.json`)**: This step uses the malicious IPs to get a summary of WAF and other security layers actions, quantifying how many additional security events would have been blocked if MUD was in mitigation mode.
+
 
 **Run the command:**
 
@@ -125,24 +126,24 @@ A simple aggregation to find which namespaces and virtual hosts have the most ma
 **Run the command:**
 
 ```bash
-node run_query.js ./queries/top_namespaces_by_mud.json --relative 7d
+node run_query.js ./queries/top_vh_namespaces_by_mud.json --relative 7d
 ```
 
 #### Use Case 3: Top 100 URLs Accessed by Malicious Users
 
-Another simple aggregation to see which URLs are being targeted.
+Another simple aggregation to see top 100 URLs, Users, TLS Fingerprint and etc. are being targeted.
 
 **Run the command:**
 
 ```bash
-node run_query.js ./queries/top_urls_by_mud.json --relative 1d
+node run_query.js ./queries/top_100.json --relative 1d
 ```
 
 -----
 
 ## ✍️ Writing Your Own Queries
 
-Creating queries is easy. Just make a new `.json` file and follow the structure.
+Creating queries is easy. Just make a new `.json` file and follow the structure. Leave the template variables (e.g. {VAR} ) unchanged.
 
 ### Query Template Structure
 
@@ -151,7 +152,7 @@ Creating queries is easy. Just make a new `.json` file and follow the structure.
   "namespace": "{NAMESPACE}",
   "query": {
     "sec_event_type": "waf_sec_event",
-    "country": "!=AU"
+    "country": "!~US|CA|AU"
   },
   "aggs": {
     "top_countries": {
@@ -169,9 +170,8 @@ Creating queries is easy. Just make a new `.json` file and follow the structure.
 Prefix your value in the `query` object to use an operator.
 
   * `=` (optional): Exact match. `"country": "AU"`
-  * `!=`: Not equal to. `"country": "!=AU"`
+  * `=~`: (optional)  regex match. `"country": "US|CA"`
+  * `!=`: Not equal to. `"country": "!=AU"`  
   * `!~`: Not regex match. `"country": "!~US|CA"`
-
-**Note**: The script automatically converts `query` keys and values to **lowercase**. Aggregation field names (like `SRC_IP` in `aggs`) are kept **uppercase**.
 
 Happy investigating\! ✨
