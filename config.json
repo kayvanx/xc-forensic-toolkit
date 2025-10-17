@@ -9,14 +9,14 @@
   "_comment3": "Set the default namespace. Use 'system' for tenancy-wide searches.",
   "NAMESPACE": "system",
 
-  "_comment4": "Your F5 XC API Token. Keep this safe!",
-  "API_TOKEN": "ves-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "_comment4": "Your F5 XC API Token. Keep this safe! The recommended role is 'ves-io-monitor-role' on the system and relevant app namespaces.",
+  "API_TOKEN": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 
   "_comment5": "Optionally define an LB name to construct a VH_NAME variable for your queries.",
   "LB_NAME": "my-app-lb",
   "VH_NAME_TEMPLATE": "ves-io-http-loadbalancer-${LB_NAME}",
 
-  "_comment6": "Maximum number of values (e.g., IPs) to use in a drill-down query.",
+  "_comment6": "Maximum number of values (e.g., IPs) to use in a drill-down (Group By) query.",
   "MAX_DRILLDOWN_VALUES": 100,
 
   "//": "List of trusted IPs/subnets to exclude from analysis. Critical for accurate Malicious User Detection (MUD) PoVs.",
