@@ -1,0 +1,52 @@
+{
+  "namespace": "{NAMESPACE}",
+  "query": {
+    "sec_event_type": "!=MALICIOUS_USER_SEC_EVENT"
+  },
+  "start_time": "{START_TIME}",
+  "end_time": "{END_TIME}",
+  "aggs": {
+    "fieldAggregation_URIs": {
+      "field_aggregation": {
+        "field": "URI",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_TLS_FINGERPRINTS": {
+      "field_aggregation": {
+        "field": "TLS_FINGERPRINT",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_ACTIONS": {
+      "field_aggregation": {
+        "field": "ACTION",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_API_ENDPOINTS": {
+      "field_aggregation": {
+        "field": "API_EP",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_USERS": {
+      "field_aggregation": {
+        "field": "USER",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_VIOLATION": {
+      "field_aggregation": {
+        "field": "VIOLATION",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_SIGNATURE_NAME": {
+      "field_aggregation": {
+        "field": "SIGNATURE_NAME",
+        "topk": 100
+      }
+    }
+  }
+}
