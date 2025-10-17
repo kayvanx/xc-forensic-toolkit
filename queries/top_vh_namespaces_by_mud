@@ -1,0 +1,23 @@
+{
+  "namespace": "{NAMESPACE}",
+  "query": {
+    "sec_event_type": "malicious_user_sec_event"
+  },
+  "start_time": "{START_TIME}",
+  "end_time": "{END_TIME}",
+  "limit":1,
+  "aggs": {
+    "fieldAggregation_LBs_100": {
+      "field_aggregation": {
+        "field": "VH_NAME",
+        "topk": 100
+      }
+    },
+    "fieldAggregation_NAMESPACES_100": {
+      "field_aggregation": {
+        "field": "NAMESPACE",
+        "topk": 100
+      }
+    }
+  }
+}
