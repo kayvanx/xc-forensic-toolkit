@@ -119,6 +119,8 @@ This workflow first finds the top malicious IPs and then counts the actions from
 ```bash
 node run_query.js ./queries/step1_get_top_malicious_ips.json --drill-down SRC_IP ./queries/step2_count_waf_actions.json --relative 1h
 ```
+Sample Output:
+<img width="224" height="181" alt="image" src="https://github.com/user-attachments/assets/4e88f2c8-43ca-4a7a-8e43-2cff84b438a7" />
 
 #### Use Case 2: Top Namespaces with Malicious Users
 
