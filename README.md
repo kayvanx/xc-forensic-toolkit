@@ -62,8 +62,15 @@ This is the control center for the script. Here’s what each setting does:
   "_comment3": "Set the default namespace. Use 'system' for tenancy-wide searches.",
   "NAMESPACE": "system",
 
-  "_comment4": "Your F5 XC API Token. Keep this safe! The recommended role is 'ves-io-monitor-role' on the system and relevant app namespaces.",
+  "_comment_auth": "Set the authentication method: 'API_TOKEN' or 'CSRF'.",
+  "AUTH_METHOD": "API_TOKEN",
+
+  "//_api_token_auth": "Used if AUTH_METHOD is 'API_TOKEN'. Recommended role: 'ves-io-monitor-role' on the system and relevant app namespaces.",
   "API_TOKEN": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=",
+
+  "//_csrf_auth": "Used if AUTH_METHOD is 'CSRF'. Get these from your browser's developer tools.",
+  "CSRF_TOKEN": "your-csrf-token-here",
+  "COOKIE_STRING": "your-full-cookie-string-here (copy the full value from the 'Cookie' request header)",
 
   "_comment5": "Optionally define an LB name to construct a VH_NAME variable for your queries.",
   "LB_NAME": "my-app-lb",
