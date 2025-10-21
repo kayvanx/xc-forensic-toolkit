@@ -13,12 +13,25 @@ function loadConfig() {
   const config = JSON.parse(configWithoutComments);
 
   config.VH_NAME = config.VH_NAME_TEMPLATE.replace('${LB_NAME}', config.LB_NAME);
-  config.API_AGGREGATION_URL = config.API_AGGREGATION_URL_TEMPLATE
+
+  let aggUrl = config.API_AGGREGATION_URL_TEMPLATE
     .replace('{TENANT_URL}', config.TENANT_URL)
     .replace('{NAMESPACE}', config.NAMESPACE);
-  config.API_EVENTS_URL = config.API_EVENTS_URL_TEMPLATE
+  let eventUrl = config.API_EVENTS_URL_TEMPLATE
     .replace('{TENANT_URL}', config.TENANT_URL)
     .replace('{NAMESPACE}', config.NAMESPACE);
+
+  if (config.AUTH_METHOD === 'CSRF') {
+    if (!config.CSRF_TOKEN) {
+      throw new Error("AUTH_METHOD is 'CSRF' but CSRF_TOKEN is not defined in config.json.");
+    }
+    const csrfParam = `?csrf=${config.CSRF_TOKEN}`;
+    config.API_AGGREGATION_URL = aggUrl + csrfParam;
+    config.API_EVENTS_URL = eventUrl + csrfParam;
+  } else {
+    config.API_AGGREGATION_URL = aggUrl;
+    config.API_EVENTS_URL = eventUrl;
+  }
   
   return config;
 }
@@ -36,14 +49,30 @@ function logDebug(level, title, data, DEBUG_LEVEL) {
   }
 }
 
+// UPDATED: This function now adds the Origin header for CSRF
 function getRequestHeaders(config) {
-  return {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': `APIToken ${config.API_TOKEN}`,
-    },
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
   };
+
+  if (config.AUTH_METHOD === 'CSRF') {
+    if (!config.COOKIE_STRING) {
+      throw new Error("AUTH_METHOD is 'CSRF' but COOKIE_STRING is not defined in config.json.");
+    }
+    if (!config.TENANT_URL) {
+        throw new Error("TENANT_URL must be defined in config.json for CSRF auth.");
+    }
+    headers['Cookie'] = config.COOKIE_STRING;
+    headers['Origin'] = `https://{config.TENANT_URL}`; // Add the Origin header
+  } else {
+    if (!config.API_TOKEN) {
+      throw new Error("AUTH_METHOD is 'API_TOKEN' but API_TOKEN is not defined in config.json.");
+    }
+    headers['Authorization'] = `APIToken ${config.API_TOKEN}`;
+  }
+
+  return { headers };
 }
 
 async function prepareRequestBody(queryFile, { startTime, endTime }, config) {
@@ -61,16 +90,14 @@ function extractBucketKeys(responseData) {
   return buckets.map(bucket => bucket.key);
 }
 
-// UPDATED: This function now preserves the original case for keys and values
 function buildRequestBody(templateObject) {
   const queryParts = [];
   for (const key in templateObject.query) {
     let value = templateObject.query[key];
-    const originalKey = key; // Use the key as-is
+    const originalKey = key;
     
-    let operator = '='; // Default operator
+    let operator = '=';
     
-    // Check for explicit operators
     if (value.startsWith('!=')) {
       operator = '!=';
       value = value.substring(2);
@@ -83,11 +110,9 @@ function buildRequestBody(templateObject) {
     } else if (value.startsWith('=')) {
       value = value.substring(1);
     } else if (value.includes('|')) {
-      // Infer regex for multi-value strings
       operator = '=~';
     }
     
-    // Use the value as-is, without case conversion
     queryParts.push(`${originalKey}${operator}"${value}"`);
   }
   
@@ -96,7 +121,6 @@ function buildRequestBody(templateObject) {
     query: `{${queryParts.join(',')}}`,
   };
 }
-
 
 function populateTemplate(template, { startTime, endTime }, config) {
   const replacements = { ...config, START_TIME: startTime, END_TIME: endTime };
